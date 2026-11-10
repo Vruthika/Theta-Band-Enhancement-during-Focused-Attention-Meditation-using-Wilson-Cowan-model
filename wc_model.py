@@ -5,7 +5,6 @@ from scipy.integrate import solve_ivp
 from scipy.optimize import brentq
 from scipy.special import expit
 
-
 @dataclass(frozen=True)
 class Params:
     wEE: float = 16.0

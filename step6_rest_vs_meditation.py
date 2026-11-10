@@ -20,9 +20,9 @@ from scipy.signal import welch
 from scipy.integrate import trapezoid
 from wc_model import Params, simulate
 
-TAU = 25.0                       # ms
-FS = 1000.0                      # samples per second (1 sample per ms)
-T_TOTAL, T_DISCARD = 22000.0, 2000.0     # ms
+TAU = 25.0
+FS = 1000.0
+T_TOTAL, T_DISCARD = 22000.0, 2000.0
 THETA = (4.0, 8.0)
 base = Params(tauE=TAU, tauI=TAU)
 
@@ -36,7 +36,7 @@ scenarios = {
 
 def analyse(p):
     t, E, I = simulate(p, y0=(0.2, 0.1), t_end=T_TOTAL, n=int(T_TOTAL) + 1)
-    keep = t >= T_DISCARD                          # discard the transient
+    keep = t >= T_DISCARD
     t, x = t[keep], E[keep]
     f, Pxx = welch(x, fs=FS, window="hann", nperseg=4096, noverlap=2048,
                    detrend="constant", scaling="density")
@@ -65,11 +65,13 @@ for row, (name, pair) in enumerate(scenarios.items()):
     else:
         ratio = res[1]["theta"] / res[0]["theta"]
         print(f"{'':32s} theta-power ratio (meditation / rest) = {ratio:.1f}\n")
-    axes[row, 0].set(xlim=(0, 2), xlabel="time (s)", ylabel="E(t)", title=f"{name}: time series")
+    axes[row, 0].set(xlim=(0, 2), xlabel="time (s)", ylabel="E(t)",
+                     title=f"{name}: time series")
     axes[row, 0].legend(fontsize=8)
     axes[row, 1].axvspan(*THETA, color="gold", alpha=0.3, label="theta 4-8 Hz")
     axes[row, 1].set(xlim=(0, 30), ylim=(1e-12, None), xlabel="frequency (Hz)",
-                     ylabel="power spectral density", title=f"{name}: Welch spectrum")
+                     ylabel="power spectral density",
+                     title=f"{name}: Welch spectrum")
     axes[row, 1].legend(fontsize=8)
 plt.tight_layout(); plt.savefig("fig6_rest_vs_meditation.png", dpi=200)
 plt.show()

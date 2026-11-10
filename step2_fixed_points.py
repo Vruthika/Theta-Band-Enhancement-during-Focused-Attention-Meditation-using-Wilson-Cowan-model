@@ -43,6 +43,6 @@ for key, c in (("stable", "k"), ("unstable", "r")):
     if len(a):
         ax.plot(a[:, 0], a[:, 1], ".", ms=3, color=c, label=f"{key} fixed point")
 ax.set(xlabel="external input P", ylabel="E* (fixed point)",
-       title="Fixed points vs P (limit cycles to be added in Phase 4)")
+       title="Fixed points vs P(limit cycles to be added)")
 ax.legend(); plt.tight_layout(); plt.savefig("fig2_fixed_points_vs_P.png", dpi=200)
 plt.show()

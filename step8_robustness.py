@@ -29,14 +29,24 @@ ratio = np.full((len(names), len(changes)), np.nan)
 for i, nm in enumerate(names):
     for j, c in enumerate(changes):
         v0 = getattr(base, nm)
-        v = c if nm == "Q" else v0 * (1.0 + c)            # Q: absolute shift from 0
+        v = c if nm == "Q" else v0 * (1.0 + c)
         T = period(base.with_(**{nm: v}))
         ratio[i, j] = T / T0 if not np.isnan(T) else np.nan
     row = "  ".join("  --  " if np.isnan(r) else f"{r:6.2f}" for r in ratio[i])
     print(f"{nm:4s} {row}")
 print("\n('--' = no sustained oscillation; numbers = period / classic period)")
 
-# ---- shared sigmoid test ------------------------------------------------------
+# theta-band membership at tau = 25 ms
+T_lo, T_hi = 1000.0 / (8 * 25), 1000.0 / (4 * 25)
+theta_ok = ~np.isnan(ratio) & (ratio * T0 >= T_lo) & (ratio * T0 <= T_hi)
+print(f"\nTheta-band membership at tau = 25 ms (T in [{T_lo:.1f}, {T_hi:.1f}] dimensionless):")
+print(f"{'':4s} " + "  ".join(f"{c*100:+.0f}%".rjust(5) for c in changes))
+for i, nm in enumerate(names):
+    row = "  ".join("  --  " if np.isnan(ratio[i, j]) else
+                    ("  yes " if theta_ok[i, j] else "  no  ")
+                    for j in range(len(changes)))
+    print(f"{nm:4s} {row}")
+
 print("\nShared sigmoid (S_I = S_E):")
 shared = [("aI = aE = 1.3, thI = thE = 4.0", base.with_(aI=1.3, thI=4.0)),
           ("aI = aE = 2.0, thI = thE = 3.7", base.with_(aE=2.0, thE=3.7))]
@@ -44,7 +54,6 @@ for label, p in shared:
     T = period(p)
     print(f"  {label}: " + ("no sustained oscillation" if np.isnan(T) else f"period = {T:.2f}"))
 
-# ---- figure -------------------------------------------------------------------
 fig, ax = plt.subplots(figsize=(9, 5.5))
 cmap = plt.get_cmap("coolwarm").copy(); cmap.set_bad("0.85")
 im = ax.imshow(np.ma.masked_invalid(ratio), cmap=cmap, vmin=0.5, vmax=1.5, aspect="auto")
@@ -53,9 +62,13 @@ ax.set_xticklabels([f"{c * 100:+.0f}%  (Q: {c:+.2f})" for c in changes], fontsiz
 ax.set_yticks(range(len(names))); ax.set_yticklabels(names)
 for i in range(len(names)):
     for j in range(len(changes)):
-        ax.text(j, i, "none" if np.isnan(ratio[i, j]) else f"{ratio[i, j]:.2f}",
-                ha="center", va="center", fontsize=8)
-ax.set(xlabel="change of one parameter (Q: absolute shift)", title="Period relative to the classic set (grey = no oscillation)")
+        txt = "none" if np.isnan(ratio[i, j]) else f"{ratio[i, j]:.2f}"
+        ax.text(j, i, txt, ha="center", va="center", fontsize=8)
+        if not np.isnan(ratio[i, j]) and not theta_ok[i, j]:
+            ax.text(j + 0.32, i + 0.28, "\u2717", ha="center", va="center",
+                    fontsize=9, color="darkred", fontweight="bold")
+ax.set(xlabel="change of one parameter (Q: absolute shift)",
+       title="Period relative to classic set; \u2717 = no longer in theta band at tau=25 ms")
 plt.colorbar(im, label="period / classic period")
 plt.tight_layout(); plt.savefig("fig8_robustness.png", dpi=200)
 plt.show()
