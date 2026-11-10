@@ -1,4 +1,4 @@
-# 🧠 Wilson–Cowan E–I Model: Theta Rhythm & Meditation
+# 🧠 Excitatory-Inhibitory Population Dynamics and the Emergence of Neural Oscillations: A Mathematical Model of Theta-Band Enhancement During Focused-Attention Meditation
 
 > A computational study of the simplified Wilson–Cowan excitatory–inhibitory model, applied to theta-band (4–8 Hz) oscillations observed in EEG during focused-attention meditation.
 
