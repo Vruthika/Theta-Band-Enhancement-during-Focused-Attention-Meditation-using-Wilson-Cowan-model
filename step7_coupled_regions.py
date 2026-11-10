@@ -13,7 +13,6 @@ Two experiments, both swept over the coupling strength k:
 Measures (see wc_model.sync_measures): phase difference, frequency difference,
 phase-locking value (PLV) and correlation. Time is in units of tau; the
 frequency difference is converted to Hz with tau = 25 ms.
-Saves fig7_synchronization.png.
 """
 import numpy as np
 import matplotlib.pyplot as plt

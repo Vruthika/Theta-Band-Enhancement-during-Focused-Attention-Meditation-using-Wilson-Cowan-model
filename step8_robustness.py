@@ -1,5 +1,5 @@
 """
-Step 8 - Robustness and critical evaluation.
+Step 8 - Robustness and critical evaluation
 
 Question: how fragile is the theta-capable oscillation to the choices made?
 Each parameter is changed one at a time by -20, -10, -5, +5, +10, +20 percent
@@ -7,7 +7,6 @@ Each parameter is changed one at a time by -20, -10, -5, +5, +10, +20 percent
 For each change the script checks whether a sustained oscillation survives and
 how the period changes relative to the classic set. A second test replaces the
 two sigmoids by a single shared sigmoid (as in the abstract's S(x)).
-Saves fig8_robustness.png and prints the table.
 """
 import numpy as np
 import matplotlib.pyplot as plt

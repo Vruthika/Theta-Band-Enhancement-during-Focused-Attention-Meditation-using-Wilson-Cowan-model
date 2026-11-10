@@ -1,5 +1,5 @@
 """
-Step 6 - Resting vs meditative regime: time series and power spectra.
+Step 6 - Resting vs meditative regime: time series and power spectra 
 
 EEG is mimicked by the excitatory activity E(t) (an assumption to state in
 the report). Time is in ms (tau_E = tau_I = 25 ms, which puts the classic
@@ -13,7 +13,6 @@ with your guide which one to use:
   Scenario B - weight wEE (Hopf route, P = 1.25):
                          rest wEE = 13.30 (just above Hopf, weak oscillation)
                          meditation wEE = 16.0 (strong oscillation)
-Saves fig6_rest_vs_meditation.png and prints a comparison table.
 """
 import numpy as np
 import matplotlib.pyplot as plt

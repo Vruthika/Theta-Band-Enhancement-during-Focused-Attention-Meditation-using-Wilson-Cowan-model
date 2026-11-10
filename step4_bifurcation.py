@@ -14,7 +14,6 @@ Three one-parameter diagrams are produced (SN = saddle-node):
    A) input P   -> oscillation switches on through a saddle-node
    B) weight wEE -> a Hopf bifurcation (oscillation grows from zero amplitude)
    C) input Q   -> a second Hopf bifurcation
-Saves fig4_bifurcation.png and prints the bifurcation values.
 """
 import numpy as np
 import matplotlib.pyplot as plt

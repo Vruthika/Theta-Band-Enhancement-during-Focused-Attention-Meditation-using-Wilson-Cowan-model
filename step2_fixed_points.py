@@ -3,7 +3,8 @@ Step 2 - Fixed points and their stability.
 
 What it does
   1. Finds every fixed point for several values of the input P.
-  2. Computes the Jacobian, its eigenvalues, trace and determinant, and
+  2. Computes the Jacobian matrix J at each fixed point (analytic formula, checked
+     against a numerical Jacobian), its eigenvalues, trace and determinant, and
      classifies each point (stable/unstable node or focus, saddle).
   3. Sweeps P and plots the fixed-point branches (black = stable,
      red = unstable). This is the equilibrium part of the bifurcation diagram
@@ -11,7 +12,7 @@ What it does
 """
 import numpy as np
 import matplotlib.pyplot as plt
-from wc_model import Params, find_fixed_points, jacobian, classify
+from wc_model import Params, find_fixed_points, jacobian, jacobian_numeric, classify
 
 base = Params()
 
@@ -24,6 +25,8 @@ for P in (0.0, 0.5, 0.9, 1.25, 2.0, 3.5, 4.0):
         label, ev, tr, det = classify(jacobian(E, I, p))
         evs = ", ".join(f"{z:.3f}" for z in ev)
         print(f"  (E*, I*) = ({E:.4f}, {I:.4f})  {label:15s} trace={tr:7.3f} det={det:7.3f}  eig = [{evs}]")
+        J, Jn = jacobian(E, I, p), jacobian_numeric(E, I, p)
+        print(f"     J = [[{J[0,0]:8.4f}, {J[0,1]:8.4f}], [{J[1,0]:8.4f}, {J[1,1]:8.4f}]]   max|J - J_numeric| = {abs(J-Jn).max():.1e}")
 
 # sweep P --------------------------------------------------------------------
 Ps = np.linspace(0.0, 4.5, 451)
@@ -40,6 +43,6 @@ for key, c in (("stable", "k"), ("unstable", "r")):
     if len(a):
         ax.plot(a[:, 0], a[:, 1], ".", ms=3, color=c, label=f"{key} fixed point")
 ax.set(xlabel="external input P", ylabel="E* (fixed point)",
-       title="Fixed points vs P ")
+       title="Fixed points vs P (limit cycles to be added in Phase 4)")
 ax.legend(); plt.tight_layout(); plt.savefig("fig2_fixed_points_vs_P.png", dpi=200)
 plt.show()

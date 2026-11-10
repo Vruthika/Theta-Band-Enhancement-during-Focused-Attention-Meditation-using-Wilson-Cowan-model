@@ -1,5 +1,5 @@
 """
-Step 5 - Place the oscillation frequency in the theta band.
+Step 5 - Place the oscillation frequency in the theta band
 
 Because of the nondimensionalisation, the real period is
         T = T_hat(eps, parameters) * tau_E ,   eps = tau_E / tau_I
@@ -12,7 +12,6 @@ Panels
   B) frequency map over (tau_E, tau_I). Contours mark 4 and 8 Hz. Grey means
      no sustained oscillation for that ratio.
   C) frequency vs input P at tau = 25 ms: the rhythm speeds up as P grows.
-Saves fig5_frequency_tuning.png.
 """
 import numpy as np
 import matplotlib.pyplot as plt
